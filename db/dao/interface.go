@@ -10,9 +10,3 @@ type CounterInterface interface {
 	UpsertCounter(counter *model.CounterModel) error
 	ClearCounter(id int32) error
 }
-
-// CounterInterfaceImp 计数器数据模型实现
-type CounterInterfaceImp struct{}
-
-// Imp 实现实例
-var Imp CounterInterface = &CounterInterfaceImp{}

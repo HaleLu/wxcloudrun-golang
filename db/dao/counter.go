@@ -7,6 +7,12 @@ import (
 
 const tableName = "Counters"
 
+// CounterInterfaceImp 计数器数据模型实现
+type CounterInterfaceImp struct{}
+
+// Imp 实现实例
+var Imp CounterInterface = &CounterInterfaceImp{}
+
 // ClearCounter 清除Counter
 func (imp *CounterInterfaceImp) ClearCounter(id int32) error {
 	cli := db.Get()
