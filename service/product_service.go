@@ -30,7 +30,7 @@ func getProductReq(r *http.Request) (*vo.ProductReq, error) {
 // ProductHandler 商品接口
 func ProductHandler(w http.ResponseWriter, r *http.Request) {
 	res := &JsonResult{}
-
+	fmt.Printf("req:%+v\n", r)
 	if r.Method == http.MethodGet {
 		id, _ := strconv.ParseInt(r.Form.Get("id"), 10, 64)
 		product, err := getProduct(id)
