@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"time"
 	"wxcloudrun-golang/db"
 	"wxcloudrun-golang/db/model"
 )
@@ -15,8 +16,9 @@ func (imp *ProductDao) Delete(id int64) error {
 }
 
 func (imp *ProductDao) Upsert(m *model.Product) error {
+	now := time.Now()
+	m.UpdateTime = &now
 	cli := db.Get()
-
 	return cli.Save(m).Error
 }
 
