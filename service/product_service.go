@@ -32,7 +32,7 @@ func ProductHandler(w http.ResponseWriter, r *http.Request) {
 	res := &JsonResult{}
 	fmt.Printf("req:%+v\n", r)
 	if r.Method == http.MethodGet {
-		id, _ := strconv.ParseInt(r.Form.Get("id"), 10, 64)
+		id, _ := strconv.ParseInt(r.URL.Query().Get("id"), 10, 64)
 		product, err := getProduct(id)
 		if err != nil {
 			res.Code = -1
