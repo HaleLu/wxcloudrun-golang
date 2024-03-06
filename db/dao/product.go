@@ -31,3 +31,13 @@ func (imp *ProductDao) Get(id int64) (*model.Product, error) {
 
 	return m, err
 }
+
+func (imp *ProductDao) List() ([]*model.Product, error) {
+	var err error
+	var list []*model.Product
+
+	cli := db.Get()
+	err = cli.Find(&list).Error
+
+	return list, err
+}

@@ -27,6 +27,28 @@ func getProductReq(r *http.Request) (*vo.ProductReq, error) {
 	return body, nil
 }
 
+// ProductsHandler 商品列表接口
+func ProductsHandler(w http.ResponseWriter, r *http.Request) {
+	res := &JsonResult{}
+	fmt.Printf("req:%+v\n", r)
+	if r.Method == http.MethodGet {
+		products, err := listProduct()
+		if err != nil {
+			res.Code = -1
+			res.ErrorMsg = err.Error()
+		} else {
+			res.Data = products
+		}
+	}
+	msg, err := json.Marshal(res)
+	if err != nil {
+		fmt.Fprint(w, "内部错误")
+		return
+	}
+	w.Header().Set("content-type", "application/json")
+	w.Write(msg)
+}
+
 // ProductHandler 商品接口
 func ProductHandler(w http.ResponseWriter, r *http.Request) {
 	res := &JsonResult{}
@@ -107,4 +129,14 @@ func getProduct(id int64) (*model.Product, error) {
 	}
 
 	return product, nil
+}
+
+// getProduct 查询当前商品
+func listProduct() ([]*model.Product, error) {
+	products, err := dao.ProductDaoImpl.List()
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
 }
