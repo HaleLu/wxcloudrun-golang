@@ -1,142 +1,33 @@
 package service
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"strconv"
 	"wxcloudrun-golang/vo"
 
-	"wxcloudrun-golang/db/dao"
 	"wxcloudrun-golang/db/model"
 )
 
-// getAction 获取action
-func getProductReq(r *http.Request) (*vo.ProductReq, error) {
-	decoder := json.NewDecoder(r.Body)
-	body := &vo.ProductReq{}
-	if err := decoder.Decode(body); err != nil {
-		return nil, err
-	}
-	defer r.Body.Close()
+var ProductServiceImpl ProductService
 
-	if body.Action == "" || body.Product == nil {
-		return nil, fmt.Errorf("缺少参数")
-	}
-
-	return body, nil
+type ProductService struct {
+	SimpleService[model.Product, uint64]
 }
 
-// ProductsHandler 商品列表接口
-func ProductsHandler(w http.ResponseWriter, r *http.Request) {
-	res := &JsonResult{}
-	fmt.Printf("req:%+v\n", r)
-	if r.Method == http.MethodGet {
-		products, err := listProduct()
-		if err != nil {
-			res.Code = -1
-			res.ErrorMsg = err.Error()
-		} else {
-			res.Data = products
-		}
-	}
-	msg, err := json.Marshal(res)
-	if err != nil {
-		fmt.Fprint(w, "内部错误")
-		return
-	}
-	w.Header().Set("content-type", "application/json")
-	w.Write(msg)
+// UpsertProduct 创建或修改商品
+func (s *ProductService) UpsertProduct(req *vo.ProductReq) error {
+	return s.Upsert(req.Product)
 }
 
-// ProductHandler 商品接口
-func ProductHandler(w http.ResponseWriter, r *http.Request) {
-	res := &JsonResult{}
-	fmt.Printf("req:%+v\n", r)
-	if r.Method == http.MethodGet {
-		id, _ := strconv.ParseInt(r.URL.Query().Get("id"), 10, 64)
-		product, err := getProduct(id)
-		if err != nil {
-			res.Code = -1
-			res.ErrorMsg = err.Error()
-		} else {
-			res.Data = product
-		}
-	} else if r.Method == http.MethodPost {
-		product, err := modifyProduct(r)
-		if err != nil {
-			res.Code = -1
-			res.ErrorMsg = err.Error()
-		} else {
-			res.Data = product
-		}
-	} else {
-		res.Code = -1
-		res.ErrorMsg = fmt.Sprintf("请求方法 %s 不支持", r.Method)
-	}
-
-	msg, err := json.Marshal(res)
-	if err != nil {
-		fmt.Fprint(w, "内部错误")
-		return
-	}
-	w.Header().Set("content-type", "application/json")
-	w.Write(msg)
+// DeleteProduct 删除商品
+func (s *ProductService) DeleteProduct(id int64) error {
+	return s.Delete(uint64(id))
 }
 
-// modifyCounter 更新计数，自增或者清零
-func modifyProduct(r *http.Request) (*model.Product, error) {
-	req, err := getProductReq(r)
-	if err != nil {
-		return nil, err
-	}
-
-	if req.Action == "inc" {
-		req.Product, err = upsertProduct(req)
-		if err != nil {
-			return nil, err
-		}
-	} else if req.Action == "clear" {
-		err = deleteProduct(int64(req.Product.Id))
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		err = fmt.Errorf("参数 action : %s 错误", req.Action)
-	}
-
-	return req.Product, err
+// GetProduct 查询当前商品
+func (s *ProductService) GetProduct(id int64) (*model.Product, error) {
+	return s.Get(uint64(id))
 }
 
-// upsertCounter 更新或修改计数器
-func upsertProduct(req *vo.ProductReq) (*model.Product, error) {
-	err := dao.ProductDaoImpl.Upsert(req.Product)
-	if err != nil {
-		return nil, err
-	}
-	return req.Product, nil
-}
-
-func deleteProduct(id int64) error {
-	return dao.ProductDaoImpl.Delete(id)
-}
-
-// getProduct 查询当前商品
-func getProduct(id int64) (*model.Product, error) {
-	product, err := dao.ProductDaoImpl.Get(id)
-	if err != nil {
-		return nil, err
-	}
-
-	return product, nil
-}
-
-// getProduct 查询当前商品
-func listProduct() ([]*model.Product, error) {
-	products, err := dao.ProductDaoImpl.List()
-	if err != nil {
-		return nil, err
-	}
-
-	return products, nil
+// ListProduct 查询当前商品
+func (s *ProductService) ListProduct() ([]*model.Product, error) {
+	return s.List()
 }
