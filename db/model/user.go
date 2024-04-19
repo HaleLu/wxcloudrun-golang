@@ -17,14 +17,13 @@ var _ DbModel[uint64] = User{}
 // `delete_time` timestamp NULL DEFAULT NULL,
 // PRIMARY KEY (`id`)
 //) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表'
-//go:generate sqlgen -file db/model/user.go -type Mission -db mysql
 type User struct {
 	Id         uint64         `gorm:"column:id;primary_key;AUTO_INCREMENT" json:"id"`
 	OpenId     string         `gorm:"column:open_id;NOT NULL" json:"open_id"`
 	Amount     uint64         `gorm:"column:amount;NOT NULL" json:"amount"` // 余额
 	CreateTime *time.Time     `gorm:"column:create_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"create_time"`
 	UpdateTime *time.Time     `gorm:"column:update_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"update_time"`
-	DeleteTime gorm.DeletedAt `gorm:"column:delete_time"`
+	DeleteTime gorm.DeletedAt `gorm:"column:delete_time" json:"delete_time"`
 }
 
 func (p User) GetId() uint64 {

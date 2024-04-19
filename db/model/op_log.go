@@ -38,7 +38,7 @@ type OpLog struct {
 	FinishTime time.Time      `gorm:"column:finish_time;NOT NULL" json:"finish_time"`
 	CreateTime *time.Time     `gorm:"column:create_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"create_time"`
 	UpdateTime *time.Time     `gorm:"column:update_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"update_time"`
-	DeleteTime gorm.DeletedAt `gorm:"column:delete_time"`
+	DeleteTime gorm.DeletedAt `gorm:"column:delete_time" json:"delete_time"`
 }
 
 func (p OpLog) GetId() uint64 {

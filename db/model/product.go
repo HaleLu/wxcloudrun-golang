@@ -25,7 +25,7 @@ type Product struct {
 	Price      uint64         `gorm:"column:price;NOT NULL" json:"price"`             // 商品积分
 	CreateTime *time.Time     `gorm:"column:create_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"create_time"`
 	UpdateTime *time.Time     `gorm:"column:update_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"update_time"`
-	DeleteTime gorm.DeletedAt `gorm:"column:delete_time"`
+	DeleteTime gorm.DeletedAt `gorm:"column:delete_time" json:"delete_time"`
 }
 
 func (p Product) GetId() uint64 {

@@ -38,7 +38,7 @@ type Mission struct {
 	LastFinishTime *time.Time     `gorm:"column:last_finish_time" json:"last_finish_time"`  // 上次完成时间
 	CreateTime     *time.Time     `gorm:"column:create_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"create_time"`
 	UpdateTime     *time.Time     `gorm:"column:update_time;default:CURRENT_TIMESTAMP;NOT NULL" json:"update_time"`
-	DeleteTime     gorm.DeletedAt `gorm:"column:delete_time"`
+	DeleteTime     gorm.DeletedAt `gorm:"column:delete_time" json:"delete_time"`
 }
 
 func (p Mission) GetId() uint64 {

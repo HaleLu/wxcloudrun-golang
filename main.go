@@ -19,6 +19,8 @@ func main() {
 	http.HandleFunc("/api/products", handler.ProductsHandler)
 	http.HandleFunc("/api/mission", handler.MissionHandler)
 	http.HandleFunc("/api/missions", handler.MissionsHandler)
+	http.HandleFunc("/api/finance_logs", handler.FinanceLogsHandler)
+	http.HandleFunc("/api/finance_log", handler.FinanceLogHandler)
 
 	log.Fatal(http.ListenAndServe(":80", nil))
 }

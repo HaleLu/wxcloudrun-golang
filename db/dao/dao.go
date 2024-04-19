@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	MissionDaoImpl = &Dao[model.Mission, uint64]{}
-	ProductDaoImpl = &Dao[model.Product, uint64]{}
-	UserDaoImpl    = &UserDao{}
-	OpLogDaoImpl   = &OpLogDao{}
+	MissionDaoImpl    = &Dao[model.Mission, uint64]{}
+	ProductDaoImpl    = &Dao[model.Product, uint64]{}
+	UserDaoImpl       = &UserDao{}
+	OpLogDaoImpl      = &OpLogDao{}
+	FinanceLogDaoImpl = &FinanceLogDao{}
 )
 
 type Dao[T model.DbModel[TID], TID uint64 | int64 | string] struct{}
