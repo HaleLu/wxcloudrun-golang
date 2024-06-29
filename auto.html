@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Request Page</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 创建一个新的 XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
+            
+            // 指定请求的 URL
+            var url = "http://10.254.148.114/";
+            
+            // 配置请求方法和 URL
+            xhr.open("GET", url, true);
+            
+            // 发送请求
+            xhr.send();
+            
+            // 处理响应
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log("Request successful");
+                    } else {
+                        console.log("Request failed");
+                    }
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <h1>Auto Request Page</h1>
+    <p>This page automatically sends a request to www.demo.com when loaded.</p>
+</body>
+</html>
